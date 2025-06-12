@@ -4,9 +4,9 @@
 Golang based To-Do list application with Oracle database integration. This application provides CRUD operations for managing tasks.
 
 ## Prerequisites
-- Go installed
-- Oracle Instant Client
-- Postman or curl for testing
+- [Go](https://go.dev/doc/install)
+- [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client/downloads.html)
+- [Postman](https://www.postman.com/downloads) or curl for testing
 
 ## Setup Instructions
 1. Clone the repository:
