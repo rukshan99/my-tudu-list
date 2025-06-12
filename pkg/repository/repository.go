@@ -35,17 +35,6 @@ func CreateTasksTable(db *sql.DB) error {
 	return nil
 }
 
-// InsertTask inserts a new task into the "rukjlk_task_rtb" table.
-func InsertTask(db *sql.DB, task models.Task) error {
-	query := `INSERT INTO rukjlk_task_rtb (id, description, status, priority) VALUES (:1, :2, :3, :4)`
-	_, err := db.Exec(query, task.ID, task.Description, task.Status, task.Priority)
-	if err != nil {
-		log.Printf("Failed to insert task: %v", err)
-		return err
-	}
-	return nil
-}
-
 // GetAllTasks retrieves all tasks from the "rukjlk_task_rtb" table.
 func GetAllTasks(db *sql.DB) ([]models.Task, error) {
 	query := `SELECT id, description, status, priority FROM rukjlk_task_rtb`
@@ -66,4 +55,33 @@ func GetAllTasks(db *sql.DB) ([]models.Task, error) {
 		tasks = append(tasks, task)
 	}
 	return tasks, nil
+}
+
+// GetTaskByID retrieves a task from the "rukjlk_task_rtb" table by its ID.
+func GetTaskByID(db *sql.DB, id int) (*models.Task, error) {
+    query := `SELECT id, description, status, priority FROM rukjlk_task_rtb WHERE id = :1`
+    row := db.QueryRow(query, id)
+
+    var task models.Task
+    if err := row.Scan(&task.ID, &task.Description, &task.Status, &task.Priority); err != nil {
+        if err == sql.ErrNoRows {
+            log.Printf("No task found with ID %d", id)
+            return nil, nil // Return nil if no rows are found
+        }
+        log.Printf("Failed to retrieve task with ID %d: %v", id, err)
+        return nil, err
+    }
+
+    return &task, nil
+}
+
+// InsertTask inserts a new task into the "rukjlk_task_rtb" table.
+func InsertTask(db *sql.DB, task models.Task) error {
+	query := `INSERT INTO rukjlk_task_rtb (id, description, status, priority) VALUES (:1, :2, :3, :4)`
+	_, err := db.Exec(query, task.ID, task.Description, task.Status, task.Priority)
+	if err != nil {
+		log.Printf("Failed to insert task: %v", err)
+		return err
+	}
+	return nil
 }
