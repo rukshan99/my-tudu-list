@@ -118,7 +118,7 @@ Golang based To-Do list application with Oracle database integration. This appli
 - Import the provided Postman collection (`postman/my-tudu-list.postman_collection.json`) for easier testing.
 - Example `curl` command for creating a task:
   ```bash
-  curl -X POST -H "Content-Type: application/json" -d '{"description": "New Task", "status": "pending", "priority": 1}' http://localhost:8080/tasks
+  curl -X POST -H "Content-Type: application/json" -d '{"description": "New Task", "priority": 1}' http://localhost:8080/tasks
   ```
 
 ## Project Structure
