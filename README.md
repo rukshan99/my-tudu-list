@@ -1,7 +1,7 @@
-# My Tudu List Application
+# My TuDu List
 
 ## Overview
-A Go-based To-Do list application with Oracle database integration. This application provides CRUD operations for managing tasks.
+Golang based To-Do list application with Oracle database integration. This application provides CRUD operations for managing tasks.
 
 ## Prerequisites
 - Go installed
