@@ -85,3 +85,15 @@ func InsertTask(db *sql.DB, task models.Task) error {
 	}
 	return nil
 }
+
+// UpdateTask updates an existing task in the "rukjlk_task_rtb" table.
+func UpdateTask(db *sql.DB, task models.Task) error {
+	query := `UPDATE rukjlk_task_rtb SET description = :1, status = :2, priority = :3 WHERE id = :4`
+	_, err := db.Exec(query, task.Description, task.Status, task.Priority, task.ID)
+	if err != nil {
+		log.Printf("Failed to update task with ID %d: %v", task.ID, err)
+		return err
+	}
+	return nil
+}
+
