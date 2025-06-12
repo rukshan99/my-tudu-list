@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"math/rand"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 
@@ -40,15 +39,11 @@ func (tc *TaskController) GetTask(w http.ResponseWriter, r *http.Request) {
     // Extract the ID from the URL parameters
     vars := mux.Vars(r)
     idParam := vars["id"]
-    if idParam == "" {
-        http.Error(w, "Task ID is required", http.StatusBadRequest)
-        return
-    }
 
-    // Convert the ID to an integer
-    id, err := strconv.Atoi(idParam)
+    // Validate and convert the ID using the util function
+    id, err := utils.ValidateAndConvertID(idParam)
     if err != nil {
-        http.Error(w, "Invalid Task ID", http.StatusBadRequest)
+        http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
 
@@ -138,15 +133,11 @@ func (tc *TaskController) ModifyTask(w http.ResponseWriter, r *http.Request) {
 	// Extract the ID from the URL parameters
     vars := mux.Vars(r)
     idParam := vars["id"]
-    if idParam == "" {
-        http.Error(w, "Task ID is required", http.StatusBadRequest)
-        return
-    }
 
-	// Convert the ID to an integer
-    id, err := strconv.Atoi(idParam)
+    // Validate and convert the ID using the util function
+    id, err := utils.ValidateAndConvertID(idParam)
     if err != nil {
-        http.Error(w, "Invalid Task ID", http.StatusBadRequest)
+        http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
 
@@ -186,4 +177,27 @@ func (tc *TaskController) ModifyTask(w http.ResponseWriter, r *http.Request) {
     if err := utils.WriteJSONResponse(w, http.StatusOK, task); err != nil {
         http.Error(w, "Failed to write response", http.StatusInternalServerError)
     }
+}
+
+// DeleteTask handles the deletion of a task by its ID.
+func (tc *TaskController) DeleteTask(w http.ResponseWriter, r *http.Request) {
+	// Extract the ID from the URL parameters
+	vars := mux.Vars(r)
+	idParam := vars["id"]
+
+	// Validate and convert the ID using the util function
+    id, err := utils.ValidateAndConvertID(idParam)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+	// Call the repository function to delete the task by ID
+	if err := repository.DeleteTask(tc.DB, id); err != nil {
+		http.Error(w, "Failed to delete task from database", http.StatusInternalServerError)
+		return
+	}
+
+	// Write a success response
+	w.WriteHeader(http.StatusNoContent)
 }

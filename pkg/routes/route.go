@@ -16,5 +16,5 @@ func RegisterRoutes(db *sql.DB, router *mux.Router) {
 	router.HandleFunc("/api/tasks/{id}", taskController.GetTask).Methods("GET")
 	router.HandleFunc("/api/tasks", taskController.CreateTask).Methods("POST")
 	router.HandleFunc("/api/tasks/{id}", taskController.ModifyTask).Methods("PUT")
-	//router.HandleFunc("/api/tasks/{id}", taskController.DeleteTask).Methods("DELETE")
+	router.HandleFunc("/api/tasks/{id}", taskController.DeleteTask).Methods("DELETE")
 }

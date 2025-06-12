@@ -97,3 +97,14 @@ func UpdateTask(db *sql.DB, task models.Task) error {
 	return nil
 }
 
+// DeleteTask deletes a task from the "rukjlk_task_rtb" table by its ID.
+func DeleteTask(db *sql.DB, id int) error {
+	query := `DELETE FROM rukjlk_task_rtb WHERE id = :1`
+	_, err := db.Exec(query, id)
+	if err != nil {
+		log.Printf("Failed to delete task with ID %d: %v", id, err)
+		return err
+	}
+	log.Printf("Task with ID %d deleted successfully", id)
+	return nil
+}
